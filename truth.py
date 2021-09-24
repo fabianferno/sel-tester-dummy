@@ -13,20 +13,30 @@ def get_clear_browsing_button(driver):
     return driver.find_element_by_css_selector('* /deep/ #clearBrowsingDataConfirm')
 
 
-def clear_cache(driver, timeout=60):
+def clear_cache(driver, torexe, timeout=60):
     """Clear the cookies and cache for the ChromeDriver instance."""
     # navigate to the settings page
     driver.get('chrome://settings/clearBrowserData')
 
-    # wait for the button to appear
-    wait = WebDriverWait(driver, timeout)
-    wait.until(get_clear_browsing_button)
+    try:
+        time.sleep(2)
+        driver.find_element_xpath(
+            "//*[@id='clearBrowsingDataConfirm']").click()
+    except Exception as e:
+        print("error in finding clear cache button")
+        driver.delete_all_cookies()
+        torexe.terminate()
+        driver.quit()
 
-    # click the button to clear the cache
-    get_clear_browsing_button(driver).click()
+    # # wait for the button to appear
+    # wait = WebDriverWait(driver, timeout)
+    # wait.until(get_clear_browsing_button)
 
-    # wait for the button to be gone before returning
-    wait.until_not(get_clear_browsing_button)
+    # # click the button to clear the cache
+    # get_clear_browsing_button(driver).click()
+
+    # # wait for the button to be gone before returning
+    # wait.until_not(get_clear_browsing_button)
 
 
 try:
@@ -56,19 +66,24 @@ try:
         time.sleep(1)
 
         # Click Amanda
-        # radiobtn = driver.find_element_by_xpath("//*[@id='poll-answer-2183']")
-        driver.find_element_by_css_selector(
-            "input[type='radio'][value='2183']").click()
+        try:
 
-        time.sleep(1)
+            driver.find_element_by_css_selector(
+                "input[type='radio'][value='2183']").click()
 
-        # Click Vote
-        driver.find_element_by_name('vote').click()
+            time.sleep(1)
 
-        time.sleep(2)
-        clear_cache(driver)
-        torexe.terminate()
-        driver.quit()
+            # Click Vote
+            driver.find_element_by_name('vote').click()
+
+            time.sleep(2)
+
+        except Exception as e:
+            print("error in finding amanda button")
+            clear_cache(driver, torexe)
+            driver.delete_all_cookies()
+            torexe.terminate()
+            driver.quit()
 
 except Exception as e:
     print(e)

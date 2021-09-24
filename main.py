@@ -12,7 +12,6 @@ webdriver.DesiredCapabilities.CHROME['proxy']={
     "httpProxy":PROXY,
     "ftpProxy":PROXY,
     "sslProxy":PROXY,
-    
     "proxyType":"MANUAL",
     
 }
