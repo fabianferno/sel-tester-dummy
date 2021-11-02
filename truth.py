@@ -59,7 +59,7 @@ try:
 
         # Get the website
         driver.get(
-            "https://thegreatpageantcommunity.com/2021/09/18/episode-1-indias-miss-tgpc-season-10-meet-the-contestants/")
+            "WEBSITE_URL_HERE")
         # driver.get(
         #     "https://www.whatsmyip.org/")
 
